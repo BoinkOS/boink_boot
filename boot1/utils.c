@@ -1,6 +1,7 @@
 // utils.c
 #include "utils.h"
 #include "input/keyboard/keyboard.h"
+#include "bshell/boot_console.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -71,6 +72,24 @@ int atoi(const char* str) {
 	
 	if(is_negative) num = -1 * num;
 	return num;
+}
+
+void dump_hex_range(uint32_t from, uint32_t to) {
+	for (uint32_t addr = from; addr < to; addr += 16) {
+		bshell_print_hex(addr);
+		bshell_putc(':');
+		bshell_putc(' ');
+
+		for (int i = 0; i < 16; i++) {
+			uint8_t byte = *((uint8_t*)addr);
+			bshell_print_hex(byte);
+			bshell_putc(' ');
+			addr++;
+		}
+
+		bshell_putc('\n');
+		addr -= 16;
+	}
 }
 
 uint32_t strlen_max(const char *str, uint32_t max) {

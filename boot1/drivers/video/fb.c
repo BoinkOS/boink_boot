@@ -41,17 +41,10 @@ void copy_pixel(uint32_t sx, uint32_t sy, uint32_t dx, uint32_t dy) {
 void draw_test_pattern() {
 	for (size_t y = 0; y < fb_height; ++y) {
 		for (size_t x = 0; x < fb_width; ++x) {
-			if (x % 50 < 25)
-				put_pixel(x, y, encode_color(255, 0, 0)); // red vertical stripes
-			else
-				put_pixel(x, y, encode_color(0, 255, 0)); // green vertical stripes
-		}
-	}
-
-	for (size_t y = 0; y < fb_height; ++y) {
-		for (size_t x = 0; x < fb_width; ++x) {
-		   if (y % 50 < 25)
-				 put_pixel(x, y, encode_color(0, 0, 255));
+			uint8_t r = (x * 255) / fb_width;
+			uint8_t g = (y * 255) / fb_height;
+			uint8_t b = 128;
+			put_pixel(x, y, encode_color(r, g, b));
 		}
 	}
 }

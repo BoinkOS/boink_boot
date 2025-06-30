@@ -4,6 +4,7 @@
 #include "disk/disk.h"
 #include "fs/glfs.h"
 #include "utils.h"
+#include "main.h"
 
 #include "interrupts/idt.h"
 #include "interrupts/pic.h"
@@ -16,7 +17,7 @@ extern void ata_irq_handler(uint32_t irq_num);
 
 void boots2main() {
 	init_framebuffer();
-	
+	draw_test_pattern();
 	pic_remap();
 	idt_init(0x08);
 	irq_init(0x08);
@@ -65,10 +66,14 @@ void boots2main() {
 	
 	glfs_load_file(0, (void*)0x100000);
 	void (*kernel_entry)(void) = (void*)0x100000;
+	draw_test_pattern();
 	kernel_entry();
-	/*bshell_println("-------------------------");
-	bshell_println("~ Boink Interactive Bootloader ~");
 	
+	
+	bshell_println("-------------------------");
+	bshell_println("~ Boink Rescue ~");
+	
+	dump_hex_range(0x100000, 0x100100);
 	bshell_println("\n");
 	char input[128];
 	while (1) {
@@ -79,8 +84,6 @@ void boots2main() {
 		bshell_print(input);
 		bshell_putc('\n');
 		bshell_putc('\n');
-	}*/
-	
-	while (1) {};
+	}
 }
 

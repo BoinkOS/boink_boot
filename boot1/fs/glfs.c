@@ -93,6 +93,11 @@ void glfs_load_file(int index, void* dest) {
 
 	glfs_file_entry* file = &glfs_files[index];
 
+	bshell_print("loading ");
+	bshell_print(file->filename);
+	bshell_print("...");
+	bshell_putc('\n');
+
 	uint32_t sector = file->start_sector;
 	uint32_t remaining = file->size;
 	uint8_t buffer[SECTOR_SIZE];
