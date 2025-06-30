@@ -1,0 +1,1 @@
+void write_string(const char* str, uint16_t col);

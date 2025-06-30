@@ -19,6 +19,8 @@ protected_mode:
 	mov ss, ax
 	
 	mov esp, 0x9F000
+	
+	call 0x8000
 
 .hang:
 	jmp .hang
