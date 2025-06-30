@@ -37,9 +37,16 @@ void bshell_init() {
 	
 	max_cols = (fb_width - margin_left - margin_right) / FONT_WIDTH;
 
-	draw_filled_rect(0, 0, fb_width, fb_height, 0x9185BC);
+	for (uint32_t y = 0; y < fb_height; ++y) {
+		for (uint32_t x = 0; x < fb_width; ++x) {
+			if ((x+y)%2) {
+				put_pixel(x, y, 0x123456);
+				continue;
+			}
+		}
+	}
 
-	bshell_set_title("Boink Bootloader");
+	bshell_set_title("Boink Interactive Bootloader (type \"help\" to see commands)");
 	bshell_clear();
 }
 
