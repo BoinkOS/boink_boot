@@ -1,6 +1,7 @@
 #include "drivers/video/fb.h"
 #include "drivers/video/text.h"
 #include "bshell/boot_console.h"
+#include "bshell/shell.h"
 #include "disk/disk.h"
 #include "fs/glfs.h"
 #include "utils.h"
@@ -64,26 +65,7 @@ void boots2main() {
 	glfs_read_directory();
 	glfs_list_files();
 	
-	glfs_load_file(0, (void*)0x100000);
-	void (*kernel_entry)(void) = (void*)0x100000;
-	draw_test_pattern();
-	kernel_entry();
-	
-	
 	bshell_println("-------------------------");
-	bshell_println("~ Boink Rescue ~");
-	
-	dump_hex_range(0x100000, 0x100100);
-	bshell_println("\n");
-	char input[128];
-	while (1) {
-		bshell_print("boot> ");
-		bshell_input(input, sizeof(input));
-		bshell_print("ECHO: ");
-		bshell_set_title(input);
-		bshell_print(input);
-		bshell_putc('\n');
-		bshell_putc('\n');
-	}
+	shell_main();
 }
 

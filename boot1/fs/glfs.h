@@ -18,3 +18,4 @@ int check_glfs_magic(uint8_t* buffer);
 void glfs_read_directory();
 void glfs_list_files();
 void glfs_load_file(int index, void* dest);
+int glfs_find_file(const char* filename);

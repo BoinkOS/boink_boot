@@ -48,3 +48,20 @@ void draw_test_pattern() {
 		}
 	}
 }
+
+void draw_prekernel_test_pattern() {
+	const uint32_t color1 = encode_color(0, 0, 0);         // black
+	const uint32_t color2 = encode_color(20, 20, 20);       // medium grey
+
+	const size_t square_size = 32; // 32x32 pixel tiles
+
+	for (size_t y = 0; y < fb_height; ++y) {
+		for (size_t x = 0; x < fb_width; ++x) {
+			size_t square_x = x / square_size;
+			size_t square_y = y / square_size;
+			int use_alt_color = (square_x + square_y) % 2;
+
+			put_pixel(x, y, use_alt_color ? color2 : color1);
+		}
+	}
+}

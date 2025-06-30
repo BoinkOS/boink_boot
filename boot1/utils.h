@@ -11,3 +11,5 @@ void dump_hex_range(uint32_t from, uint32_t to);
 uint32_t strlen_max(const char *str, uint32_t max);
 long strtol(const char *str, char **endptr, int base);
 int strncmp(const char *s1, const char *s2, size_t n);
+char* strtok(char* str, const char* delim);
+char* strchr(const char* str, int c);

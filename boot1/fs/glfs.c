@@ -114,3 +114,11 @@ void glfs_load_file(int index, void* dest) {
 		sector++;
 	}
 }
+
+int glfs_find_file(const char* filename) {
+	for (int i = 0; i < glfs_file_count; i++) {
+		if (strcmp(glfs_files[i].filename, filename) == 0)
+			return i;
+	}
+	return -1;
+}

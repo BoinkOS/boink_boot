@@ -150,3 +150,45 @@ long strtol(const char *str, char **endptr, int base) {
 
 	return negative ? -result : result;
 }
+
+char* strtok(char* str, const char* delim) {
+	static char* next = 0;
+
+	if (str) {
+		next = str;
+	}
+
+	if (!next) return 0;
+
+	// skip any leading delimiters
+	while (*next && strchr(delim, *next)) {
+		next++;
+	}
+
+	if (!*next) return 0;
+
+	char* token_start = next;
+
+	// find end of token
+	while (*next && !strchr(delim, *next)) {
+		next++;
+	}
+
+	if (*next) {
+		*next = '\0';
+		next++; // move past null
+	} else {
+		next = 0; // no more tokens
+	}
+
+	return token_start;
+}
+
+char* strchr(const char* str, int c) {
+	while (*str) {
+		if (*str == (char)c)
+			return (char*)str;
+		str++;
+	}
+	return 0;
+}
