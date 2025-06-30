@@ -44,7 +44,7 @@ $(IMAGE): $(BOOTLOADER_S1_BIN) $(BOOTLOADER_S2_BIN)
 	dd if=$(BOOTLOADER_S2_BIN) of=$(IMAGE) bs=512 seek=1 conv=notrunc
 
 run: $(IMAGE)
-	qemu-system-i386 -fda $(IMAGE) -vga std
+	qemu-system-i386 -fda $(IMAGE) -hdb testdisk.glfs -vga std
 
 clean:
 	rm -rf build *.img

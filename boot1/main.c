@@ -1,6 +1,8 @@
 #include "drivers/video/fb.h"
 #include "drivers/video/text.h"
 #include "bshell/boot_console.h"
+#include "disk/disk.h"
+#include "fs/glfs.h"
 #include "utils.h"
 
 #include "interrupts/idt.h"
@@ -10,7 +12,7 @@
 #include "input/keyboard/keyboard.h"
 #include "uptime/uptime.h"
 extern void pit_uptime_handler(uint32_t irq);
-
+extern void ata_irq_handler(uint32_t irq_num);
 
 void boots2main() {
 	init_framebuffer();
@@ -25,9 +27,43 @@ void boots2main() {
 	bshell_init();
 	bshell_println("\"hello from boink bootloader!\"");
 	bshell_println("-------------------------");
-	bshell_println("~ Boink Interactive Bootloader ~");
 	
 	__asm__ __volatile__("sti");
+	
+	bshell_println("initializing disk...");
+	irq_set_handler(14, ata_irq_handler);
+	disk_init();
+	bshell_println("reading sector 0...");
+	uint8_t buf[512];
+	disk_read(0, buf);
+	bshell_println("done reading sector 0. attempting to read GLFS superblock...");
+	
+	char id[9];
+	for (int i = 0; i < 8; i++)
+		id[i] = buf[i];
+	id[8] = '\0';
+	
+	int is_glfs_verified = check_glfs_magic(buf);
+	
+	if (is_glfs_verified) {
+		bshell_print("read superblock identifier: ");
+		bshell_print(id);
+		bshell_print("[ ");
+		bshell_print("GLFS PASS");
+		bshell_print(" ]");
+		bshell_println("");
+	} else {
+		bshell_println("Unable to verify primary slave as GLFS disk.");
+		bshell_println("Reboot with the correct disk addressed to primary slave.");
+		while (1) ;
+	}
+	
+
+	bshell_println("\nFiles on disk:");
+	glfs_read_directory();
+	glfs_list_files();
+	bshell_println("-------------------------");
+	bshell_println("~ Boink Interactive Bootloader ~");
 	
 	bshell_println("\n");
 	char input[128];
@@ -40,5 +76,7 @@ void boots2main() {
 		bshell_putc('\n');
 		bshell_putc('\n');
 	}
+	
+	while (1) {};
 }
 
