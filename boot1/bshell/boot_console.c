@@ -3,7 +3,7 @@
 #include "../drivers/video/drawing.h"
 #include "../drivers/video/text.h"
 #include "../utils.h"
-// #include "../input/keyboard/keyboard.h"
+#include "../input/keyboard/keyboard.h"
 
 static uint32_t cursor_x = 0;
 static uint32_t cursor_y = 0;
@@ -160,7 +160,7 @@ void bshell_print_hex(uint32_t i) {
 	bshell_print(itoa(i, 16));
 }
 
-/*void bshell_input(char *buf, uint32_t max_len) {
+void bshell_input(char *buf, uint32_t max_len) {
 	uint32_t idx = 0;
 	while (1) {
 		if (kbd_has_char()) {
@@ -182,4 +182,4 @@ void bshell_print_hex(uint32_t i) {
 			}
 		}
 	}
-}*/
+}

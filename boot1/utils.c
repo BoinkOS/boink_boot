@@ -1,5 +1,6 @@
 // utils.c
 #include "utils.h"
+#include "input/keyboard/keyboard.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -22,7 +23,7 @@ int strlen(const char * str) {
 	return i;
 }
 
-/*char read_key() {
+char read_key() {
 	char c = 0;
 	while (1) {
 		if (kbd_has_char()) {
@@ -33,7 +34,7 @@ int strlen(const char * str) {
 		}
 	}
 	return c;
-}*/
+}
 
 int strcmp(const char* s1, const char* s2) {
 	while (*s1 && (*s1 == *s2)) {

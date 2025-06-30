@@ -12,4 +12,4 @@ void bshell_print(const char *str);
 void bshell_println(const char *str);
 void bshell_print_dec(uint32_t i);
 void bshell_print_hex(uint32_t i);
-//void bshell_input(char *buf, uint32_t max_len);
+void bshell_input(char *buf, uint32_t max_len);
