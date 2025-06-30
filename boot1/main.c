@@ -1,10 +1,13 @@
 #include "drivers/video/fb.h"
 #include "drivers/video/text.h"
+#include "bshell/boot_console.h"
 
 
 void boots2main() {
 	init_framebuffer();
-	draw_string(50, 50, 0xFFFFFF, 0x000000, "an ominous hello appears.\nvga fonts galore!");
+	
+	bshell_init();
+	bshell_println("GLFS Disk Error.");
 	
 	while (1);
 }
