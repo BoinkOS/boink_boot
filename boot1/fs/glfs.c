@@ -87,3 +87,25 @@ void glfs_list_files() {
 		bshell_println(" bytes");
 	}
 }
+
+void glfs_load_file(int index, void* dest) {
+	if (index >= glfs_file_count) return;
+
+	glfs_file_entry* file = &glfs_files[index];
+
+	uint32_t sector = file->start_sector;
+	uint32_t remaining = file->size;
+	uint8_t buffer[SECTOR_SIZE];
+	uint8_t* write_ptr = (uint8_t*)dest;
+
+	while (remaining > 0) {
+		disk_read(sector, buffer);
+
+		uint32_t to_copy = remaining > SECTOR_SIZE ? SECTOR_SIZE : remaining;
+		mem_cpy(write_ptr, buffer, to_copy);
+
+		write_ptr += to_copy;
+		remaining -= to_copy;
+		sector++;
+	}
+}

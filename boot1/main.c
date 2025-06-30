@@ -62,7 +62,11 @@ void boots2main() {
 	bshell_println("\nFiles on disk:");
 	glfs_read_directory();
 	glfs_list_files();
-	bshell_println("-------------------------");
+	
+	glfs_load_file(0, (void*)0x100000);
+	void (*kernel_entry)(void) = (void*)0x100000;
+	kernel_entry();
+	/*bshell_println("-------------------------");
 	bshell_println("~ Boink Interactive Bootloader ~");
 	
 	bshell_println("\n");
@@ -75,7 +79,7 @@ void boots2main() {
 		bshell_print(input);
 		bshell_putc('\n');
 		bshell_putc('\n');
-	}
+	}*/
 	
 	while (1) {};
 }
