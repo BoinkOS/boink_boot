@@ -2,6 +2,7 @@
 #include "../bshell/boot_console.h"
 #include "../drivers/video/fb.h"
 #include "../utils.h"
+#include "../llio.h"
 
 #define KERNEL_LOAD_ADDR ((void*)0x100000)
 
@@ -11,6 +12,7 @@ void shell_cmd_autorun(const char* arg);
 void shell_cmd_load(const char* arg);
 void shell_cmd_run();
 void shell_cmd_memdump(const char* arg1, const char* arg2);
+void exitsafely();
 
 void shell_main() {
 	bshell_println(":: Boink Bootloader Interactive Shell ::");
@@ -80,6 +82,7 @@ void shell_cmd_autorun(const char* filename) {
 	draw_prekernel_test_pattern();
 	
 	void (*kernel_entry)(void) = (void*)KERNEL_LOAD_ADDR;
+	exitsafely();
 	kernel_entry();
 }
 
@@ -98,6 +101,7 @@ void shell_cmd_load(const char* filename) {
 void shell_cmd_run() {
 	bshell_println("jumping to 0x100000");
 	void (*kernel_entry)(void) = (void*)KERNEL_LOAD_ADDR;
+	exitsafely();
 	kernel_entry();
 }
 
@@ -137,4 +141,18 @@ void shell_cmd_memdump(const char* arg1, const char* arg2) {
 	}
 
 	dump_hex_range(start, end);
+}
+
+void exitsafely() {
+	__asm__ volatile ("cli");
+
+	struct {
+		uint16_t limit;
+		uint32_t base;
+	} __attribute__((packed)) null_idt = { 0, 0 };
+
+	__asm__ volatile ("lidt %0" : : "m"(null_idt));
+
+	pbout(0x21, 0xFF);
+	pbout(0xA1, 0xFF);	
 }
