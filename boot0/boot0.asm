@@ -23,7 +23,7 @@ start:
 ; constants
 KERNEL_OFFSET equ 0x100000
 STACK equ 0x7000
-VESA_MODE equ 0x118
+VESA_MODE equ 0x144
 VESA_LFB equ 0x4000 ; linear framebuffer flag
 VESA_INFO_BLOCK equ 0x8000 
 VESA_MODE_INFO_BLOCK equ 0x9000
